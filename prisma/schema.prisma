@@ -1,7 +1,5 @@
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -15,11 +13,11 @@ enum Role {
 }
 
 enum OrderStatus {
-  PENDING 
-   PROCESSING
-    SHIPPED 
-     DELIVERED
-      CANCELLED
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }
 
 enum PaymentStatus {
@@ -30,43 +28,43 @@ enum PaymentStatus {
 }
 
 enum PaymentMethod {
-CARD
-CASH_ON_DELIVERY
+  CARD
+  CASH_ON_DELIVERY
 }
 
 model User {
- id  Int @id @default(autoincrement())
- name String
- email String  @unique
- password String 
- role Role @default(CUSTOMER)
-carts Cart[]
-orders Order[]
-ratings Rating[]
-transactions Transaction[]
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  role         Role          @default(CUSTOMER)
+  carts        Cart[]
+  orders       Order[]
+  ratings      Rating[]
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String
-  products    Product[]
-  createdAt   DateTime  @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
 }
 
 model Product {
-  id Int @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   title String
   price Float
-  
+
   categoryId Int
-  category  Category @relation(fields:[categoryId],references:[id])
-  
-  image String?
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  image       String?
   description String?
-  stock Int
-  discount Float
+  stock       Int
+  discount    Float
 
   carts Cart[]
 
@@ -74,83 +72,78 @@ model Product {
 
   ratings Rating[]
 
-  createdAt   DateTime  @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Cart {
   id Int @id @default(autoincrement())
-  
-  userId  Int
-  user  User @relation(fields:[userId],references:[id])
-  
-  productId  Int
-  product Product @relation(fields:[productId],references:[id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   quantity  Int
-  createdAt   DateTime  @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 
 model Order {
   id Int @id @default(autoincrement())
 
-  userId  Int
-  user  User @relation(fields:[userId],references:[id])
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 
-  
   transactions Transaction[]
-  orderItems OrderItem[]
+  orderItems   OrderItem[]
 
-   address String
-   amount Float
-   status OrderStatus @default(PENDING)
-   createdAt   DateTime  @default(now())
-   updatedAt DateTime @updatedAt
+  address   String
+  amount    Float
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model OrderItem {
   id Int @id @default(autoincrement())
-  
-  
-  productId  Int
-  product Product @relation(fields:[productId],references:[id]) 
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   quantity Int
-  price Float
-  
-  orderId Int 
-  order  Order @relation(fields:[orderId],references:[id])
- 
-  createdAt   DateTime  @default(now())
+  price    Float
 
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
 }
 
 model Rating {
   id Int @id @default(autoincrement())
 
-  productId  Int
-  product Product @relation(fields:[productId],references:[id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
   reviews String
 
   ratings Float
 
-  userId  Int
-  user  User @relation(fields:[userId],references:[id])
-  createdAt   DateTime  @default(now())
-
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Transaction {
   id Int @id @default(autoincrement())
-  
-  orderId Int 
-  order  Order @relation(fields:[orderId],references:[id])
 
-  userId  Int
-  user  User @relation(fields:[userId],references:[id])
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 
   amount Float
 
@@ -160,6 +153,5 @@ model Transaction {
 
   stripePaymentId String?
 
-  createdAt   DateTime  @default(now())
-
+  createdAt DateTime @default(now())
 }
