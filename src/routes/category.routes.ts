@@ -10,7 +10,7 @@ const categoriesRouter = express.Router();
 const controller = new CategoryController();
 
 //anyone can access
-categoriesRouter.get("/", generalLimiter, controller.getCategories);
+categoriesRouter.get("/", generalLimiter, controller.getAll);
 
 //anyone can access
 categoriesRouter.get(
@@ -18,7 +18,7 @@ categoriesRouter.get(
   generalLimiter,
   CategoryValidator.getCategoryById(),
   validate,
-  controller.getCategoryById,
+  controller.getId,
 );
 
 //only for admin
@@ -40,7 +40,7 @@ categoriesRouter.put(
   roleMiddleware(USERROLES.ADMIN),
   CategoryValidator.updateCategory(),
   validate,
-  controller.updateCategoryById,
+  controller.updateById,
 );
 
 //only for admin

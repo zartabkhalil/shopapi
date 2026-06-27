@@ -18,7 +18,7 @@ export default class CategoryController {
     });
   };
 
-  getCategories = async (req: Request, res: Response, next: NextFunction) => {
+  getAll = async (req: Request, res: Response, next: NextFunction) => {
     const result = await this.categoryService.getCategories();
     return res.status(200).json({
       success: true,
@@ -26,7 +26,7 @@ export default class CategoryController {
       data: result,
     });
   };
-  getCategoryById = async (req: Request, res: Response, next: NextFunction) => {
+  getId = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
     const result = await this.categoryService.getCategoryById(Number(id));
@@ -38,11 +38,7 @@ export default class CategoryController {
   };
 
   //update category by id
-  updateCategoryById = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  updateById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { name } = req.body;
 
