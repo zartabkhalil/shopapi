@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
-import { JwtPayload } from "../types/jwt.types";
 
+export interface JwtPayload {
+  userId: number;
+  role: string;
+}
 export default class JwtService {
   generateAccessToken(payload: JwtPayload) {
     const secret = process.env.JWT_ACCESS_SECRET;
@@ -11,7 +14,7 @@ export default class JwtService {
   verifyAccessToken(token: string) {
     const secret = process.env.JWT_ACCESS_SECRET;
     if (!secret) throw new Error("JWT_ACCESS_SECRET is not set");
-    return jwt.verify(token, secret);
+    return jwt.verify(token, secret) as JwtPayload;
   }
 
   generateRefreshToken(payload: JwtPayload) {

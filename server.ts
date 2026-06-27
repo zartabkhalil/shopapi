@@ -4,6 +4,7 @@ import express from "express";
 import helmet from "helmet";
 import errorHandler from "./src/middlewares/error.middleware";
 import authRouter from "./src/routes/auth.routes";
+import categoriesRouter from "./src/routes/category.routes";
 const app = express();
 const PORT = process.env.PORT || 8086;
 app.use(
@@ -19,6 +20,8 @@ app.set("trust proxy", 1);
 
 //user routes
 app.use("/api/user", authRouter);
+//categories routes
+app.use("/api/categories", categoriesRouter);
 
 app.use(errorHandler);
 

@@ -7,11 +7,12 @@ export default class UserController {
   }
 
   register = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, adminSecret } = req.body;
     const result = await this.userService.register({
       name,
       email,
       password,
+      adminSecret,
     });
     return res.status(201).json({
       success: true,

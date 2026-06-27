@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
+import { USERROLES } from "../config/constant";
 import { AppError } from "../lib/appError.lib";
-import JwtService from "../lib/jwt.service";
+import JwtService from "../lib/jwt.lib";
 import UserRepoistory from "../repositories/user.repository";
 import { CreateUserInput, LoginInput } from "../types/auth.types";
 
@@ -35,7 +36,6 @@ export default class AuthService {
     return { accessToken: token, user: safeUser };
   };
   register = async (data: CreateUserInput) => {
-    //:::: check duplication
     const existing = await this.userRepository.findByEmail(data.email);
     if (existing) {
       throw new AppError("User already exists", 409);
@@ -44,10 +44,25 @@ export default class AuthService {
     //:::: hashedPassword
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    //::Create Account if check passed
-
+    //::Create Account if check passed alos matched the admin secret string for role
+    if (data.adminSecret != null) {
+      const secret = process.env.ADMIN_SECRET;
+      if (!secret) throw new Error("ADMIN_SECRET is not set");
+      if (data.adminSecret !== secret) {
+        throw new AppError("Invalid admin secret", 403);
+      }
+      const { adminSecret, ...newData } = data;
+      const result = await this.userRepository.createUser({
+        ...newData,
+        role: USERROLES.ADMIN,
+        password: hashedPassword,
+      });
+      const { password, ...safeUser } = result;
+      return safeUser;
+    }
+    const { adminSecret, ...cleanData } = data;
     const result = await this.userRepository.createUser({
-      ...data,
+      ...cleanData,
       password: hashedPassword,
     });
     const { password, ...safeUser } = result;
