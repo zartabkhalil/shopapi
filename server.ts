@@ -2,22 +2,26 @@ import cors from "cors";
 import "dotenv/config"; // MUST be first — loads .env before any other module runs
 import express from "express";
 import helmet from "helmet";
-import prisma from "./src/config/db";
+import errorHandler from "./src/middlewares/error.middleware";
+import authRouter from "./src/routes/auth.routes";
 const app = express();
 const PORT = process.env.PORT || 8086;
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(helmet());
 
 app.use(express.json());
 app.set("trust proxy", 1);
 
-//for testing connection
-async function main() {
-  await prisma.$connect();
-  console.log("PostgreSQL connected");
-}
+//user routes
+app.use("/api/user", authRouter);
 
-main();
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server running on http:localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

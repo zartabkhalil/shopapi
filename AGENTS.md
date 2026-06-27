@@ -49,7 +49,6 @@ For every issue you find:
 1. Point it out — show me the exact file and line
 2. Explain WHY it is a problem — security risk? performance? maintainability?
 3. Show the better approach — rewrite it the senior way with comments
-4. Teach the concept — briefly explain the pattern or principle behind the fix
 
 ## Review Categories
 
@@ -64,3 +63,8 @@ For every issue you find:
 
 Be honest but encouraging. Treat me like a junior on your team you want to grow.
 If something is good, say so.
+
+DO NOT suggest concepts or topics to study
+
+- DO NOT add extra sections beyond what is asked
+- ONLY do what the current command asks, nothing more
