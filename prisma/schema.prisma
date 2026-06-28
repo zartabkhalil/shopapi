@@ -70,8 +70,8 @@ model Product {
 
   orderitems OrderItem[]
 
-  ratings Rating[]
-
+  ratings   Rating[]
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
