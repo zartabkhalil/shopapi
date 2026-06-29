@@ -4,6 +4,7 @@ import express from "express";
 import helmet from "helmet";
 import errorHandler from "./src/middlewares/error.middleware";
 import authRouter from "./src/routes/auth.routes";
+import cartRouter from "./src/routes/cart.routes";
 import categoriesRouter from "./src/routes/category.routes";
 import productRouter from "./src/routes/product.routes";
 const app = express();
@@ -25,6 +26,9 @@ app.use("/api/user", authRouter);
 app.use("/api/categories", categoriesRouter);
 //product routes
 app.use("/api/product", productRouter);
+
+//ADD TO CART routes
+app.use("/api/cart", cartRouter);
 
 app.use(errorHandler);
 
