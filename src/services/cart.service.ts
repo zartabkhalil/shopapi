@@ -60,12 +60,16 @@ export default class CartService {
     }, 0);
     const formatted = result.map((item) => ({
       ...item,
-      cartTotal: total,
+
       products: item.product,
 
       product: undefined,
     }));
-    return formatted;
+    const data = {
+      cartTotal: total,
+      items: formatted,
+    };
+    return data;
   };
 
   updateById = async (

@@ -3,7 +3,14 @@ import prisma from "../config/db";
 
 type CartWithProduct = Prisma.CartGetPayload<{
   include: {
-    product: true;
+    product: {
+      select: {
+        title: true;
+        price: true;
+        discount: true;
+        image: true;
+      };
+    };
   };
 }>;
 
@@ -30,8 +37,14 @@ export default class CartRepository {
       },
       data,
       include: {
-        product: true,
-        user: true,
+        product: {
+          select: {
+            title: true,
+            price: true,
+            discount: true,
+            image: true,
+          },
+        },
       },
     });
   };
@@ -49,7 +62,14 @@ export default class CartRepository {
       },
 
       include: {
-        product: true,
+        product: {
+          select: {
+            title: true,
+            price: true,
+            discount: true,
+            image: true,
+          },
+        },
       },
     });
   };
@@ -60,8 +80,14 @@ export default class CartRepository {
         id,
       },
       include: {
-        product: true,
-        user: true,
+        product: {
+          select: {
+            title: true,
+            price: true,
+            discount: true,
+            image: true,
+          },
+        },
       },
     });
   };
@@ -76,8 +102,14 @@ export default class CartRepository {
         userId,
       },
       include: {
-        product: true,
-        user: true,
+        product: {
+          select: {
+            title: true,
+            price: true,
+            discount: true,
+            image: true,
+          },
+        },
       },
     });
   };
