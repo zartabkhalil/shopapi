@@ -6,6 +6,7 @@ import errorHandler from "./src/middlewares/error.middleware";
 import authRouter from "./src/routes/auth.routes";
 import cartRouter from "./src/routes/cart.routes";
 import categoriesRouter from "./src/routes/category.routes";
+import ordersRouter from "./src/routes/order.routes";
 import productRouter from "./src/routes/product.routes";
 const app = express();
 const PORT = process.env.PORT || 8086;
@@ -29,6 +30,9 @@ app.use("/api/product", productRouter);
 
 //ADD TO CART routes
 app.use("/api/cart", cartRouter);
+
+//ORDER routes
+app.use("/api/order", ordersRouter);
 
 app.use(errorHandler);
 

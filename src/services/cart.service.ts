@@ -55,9 +55,22 @@ export default class CartService {
 
   getAll = async (userId: number) => {
     const result = await this.repository.findAll(userId);
-    const total = result.reduce((sum, item) => {
-      return sum + item.product.price * item.quantity;
-    }, 0);
+
+    //compute total and afterDiscount
+    const { total, afterDiscount } = result.reduce(
+      (acc, item) => {
+        const lineTotal = item.product.price * item.quantity;
+        // discount is stored as a percentage (e.g. 10 means 10% off)
+        const discountAmount = item.product.price - item.product.discount;
+
+        return {
+          total: acc.total + lineTotal,
+          afterDiscount: discountAmount,
+        };
+      },
+      { total: 0, afterDiscount: 0 },
+    );
+
     const formatted = result.map((item) => ({
       ...item,
 
@@ -67,6 +80,7 @@ export default class CartService {
     }));
     const data = {
       cartTotal: total,
+      afterDiscount,
       items: formatted,
     };
     return data;
