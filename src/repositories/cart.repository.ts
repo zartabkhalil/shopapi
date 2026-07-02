@@ -7,6 +7,8 @@ type CartWithProduct = Prisma.CartGetPayload<{
       select: {
         title: true;
         price: true;
+        stock: true;
+        isActive: true;
         discount: true;
         image: true;
       };
@@ -66,6 +68,8 @@ export default class CartRepository {
           select: {
             title: true,
             price: true,
+            stock: true,
+            isActive: true,
             discount: true,
             image: true,
           },
@@ -85,6 +89,8 @@ export default class CartRepository {
             title: true,
             price: true,
             discount: true,
+            stock: true,
+            isActive: true,
             image: true,
           },
         },
