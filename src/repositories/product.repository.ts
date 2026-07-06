@@ -1,4 +1,4 @@
-import { Prisma, Product } from "@prisma/client";
+import { OrderItem, OrderStatus, Prisma, Product } from "@prisma/client";
 import prisma from "../config/db";
 import { PaginatedProducts } from "../types/product.types";
 
@@ -76,6 +76,23 @@ export default class ProductRepository {
       },
       data: {
         isActive: false,
+      },
+    });
+  };
+
+  //used by Reviews
+  hasPurchasedProduct = async (
+    userId: number,
+    productId: number,
+  ): Promise<OrderItem | null> => {
+    return await prisma.orderItem.findFirst({
+      where: {
+        productId,
+
+        order: {
+          userId,
+          status: OrderStatus.DELIVERED,
+        },
       },
     });
   };

@@ -10,6 +10,7 @@ import categoriesRouter from "./src/routes/category.routes";
 import ordersRouter from "./src/routes/order.routes";
 import paymentsRouter from "./src/routes/payment.routes";
 import productRouter from "./src/routes/product.routes";
+import reviewRouter from "./src/routes/review.routes";
 const app = express();
 const PORT = process.env.PORT || 8086;
 app.use(
@@ -49,6 +50,9 @@ app.use("/api/order", ordersRouter);
 
 //PAYMENT routes
 app.use("/api/payment", paymentsRouter);
+
+//reviews routes
+app.use("/api/reviews", reviewRouter);
 
 app.use(errorHandler);
 
