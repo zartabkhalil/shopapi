@@ -1,10 +1,19 @@
-import { Order, Prisma } from "@prisma/client";
+import { Order, OrderStatus, Prisma } from "@prisma/client";
 import prisma from "../config/db";
 type OrderItem = {
   productId: number;
   quantity: number;
   price: number;
 }[];
+
+type RecentOrder = {
+  id: number;
+  amount: number;
+  createdAt: Date;
+  user: {
+    name: string;
+  };
+};
 export default class OrderRepository {
   create = async (
     order: Prisma.OrderCreateInput,
@@ -95,6 +104,51 @@ export default class OrderRepository {
         id,
       },
       data,
+    });
+  };
+
+  countOrder = async (): Promise<number> => {
+    return prisma.order.count({});
+  };
+  countOrdersByStatus = async () => {
+    const result = await prisma.order.groupBy({
+      by: ["status"],
+
+      _count: {
+        status: true,
+      },
+    });
+    const formatted: Record<OrderStatus, number> = {
+      PENDING: 0,
+      PROCESSING: 0,
+      SHIPPED: 0,
+      DELIVERED: 0,
+      CANCELLED: 0,
+    };
+
+    result.forEach((item) => {
+      formatted[item.status] = item._count.status;
+    });
+
+    return formatted;
+  };
+
+  recentOrders = async (): Promise<RecentOrder[]> => {
+    return prisma.order.findMany({
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        amount: true,
+        createdAt: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   };
 }

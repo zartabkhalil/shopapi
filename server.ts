@@ -2,11 +2,15 @@ import cors from "cors";
 import "dotenv/config"; // MUST be first — loads .env before any other module runs
 import express from "express";
 import helmet from "helmet";
+import { USERROLES } from "./src/config/constant";
 import PaymentController from "./src/controllers/payment.controller";
+import authMiddleware from "./src/middlewares/auth.middleware";
 import errorHandler from "./src/middlewares/error.middleware";
+import roleMiddleware from "./src/middlewares/role.middleware";
 import authRouter from "./src/routes/auth.routes";
 import cartRouter from "./src/routes/cart.routes";
 import categoriesRouter from "./src/routes/category.routes";
+import dashboardRouter from "./src/routes/dashboard.routes";
 import ordersRouter from "./src/routes/order.routes";
 import paymentsRouter from "./src/routes/payment.routes";
 import productRouter from "./src/routes/product.routes";
@@ -53,6 +57,14 @@ app.use("/api/payment", paymentsRouter);
 
 //reviews routes
 app.use("/api/reviews", reviewRouter);
+
+//admin dashboard
+app.use(
+  "/api/admin/",
+  authMiddleware,
+  roleMiddleware(USERROLES.ADMIN),
+  dashboardRouter,
+);
 
 app.use(errorHandler);
 

@@ -20,4 +20,14 @@ export default class PaymentRepository {
       return transaction;
     });
   };
+  sumCompleted = async (): Promise<number> => {
+    const result = await prisma.transaction.aggregate({
+      where: {
+        status: "COMPLETED",
+      },
+      _sum: { amount: true },
+    });
+
+    return result._sum.amount || 0;
+  };
 }

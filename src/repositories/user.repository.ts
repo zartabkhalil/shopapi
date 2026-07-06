@@ -1,4 +1,5 @@
 import { Prisma, User } from "@prisma/client";
+import { USERROLES } from "../config/constant";
 import prisma from "../config/db";
 
 export default class UserRepoistory {
@@ -14,6 +15,14 @@ export default class UserRepoistory {
     return prisma.user.findUnique({
       where: {
         email,
+      },
+    });
+  };
+
+  countCustomers = async (): Promise<number> => {
+    return prisma.user.count({
+      where: {
+        role: USERROLES.CUSTOMER,
       },
     });
   };
